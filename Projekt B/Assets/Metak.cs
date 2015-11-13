@@ -5,7 +5,8 @@ public class Metak : MonoBehaviour {
 
 
 	float timeout;
-
+	public float cofx;
+	public float cofy;
 	// Use this for initialization
 	void Start () {
 		timeout = Time.timeSinceLevelLoad;

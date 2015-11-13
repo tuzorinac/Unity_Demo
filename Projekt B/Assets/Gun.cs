@@ -63,6 +63,35 @@ public class Gun : MonoBehaviour {
 		rb1.AddForce (-pucanj1 * 30f);
 		rb2.AddForce (-pucanj2 * 30f);
 
+			Metak m1 = metak1.GetComponent<Metak> ();
+			Metak m2 = metak2.GetComponent<Metak> ();
+		
+		
+		if (pucanj1.x > 0f)
+		{
+			m1.cofx = -1f;
+			m2.cofx = 1f;
+
+		}
+		else 
+		{
+			m1.cofx = 1f;
+			m2.cofx =  -1f;
+			
+		}
+		if (pucanj1.y > 0f)
+		{
+			m1.cofy = -1f;
+			m2.cofy = 1f;
+			
+		}
+		else 
+		{
+			m1.cofy = +1f;
+			m2.cofy =  -1f;
+			
+		}
+
 		time = Time.timeSinceLevelLoad;
 
 

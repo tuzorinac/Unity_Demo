@@ -78,18 +78,21 @@ public class Enemyv2 : MonoBehaviour {
 
 	}
 
-	void AnimirajKrv (Transform t)
+	void AnimirajKrv (Transform t, float xv,float yv)
 	{
 		GameObject[] Zrnakrvitemp = new GameObject[75];
 		Krv[] Zrnakrvi = new Krv[75];
 
+
+
+		print (xv + " " + yv);
 
 		for (int i = 0; i != Zrnakrvitemp.Length; i++) {
 			Zrnakrvitemp [i] = (GameObject)Instantiate (Krvmodel, new Vector3 (t.position.x, t.position.y, -2.5f), new Quaternion (0, 0, 0, 0));
 			Zrnakrvi [i] = Zrnakrvitemp [i].GetComponent<Krv> ();
 		}
 
-		float xmin, xmax, ymin, ymax;
+		float xmin, xmax, ymin, ymax, cofx, cofy;
 
 
 		print (this.transform.lossyScale.x);
@@ -99,16 +102,28 @@ public class Enemyv2 : MonoBehaviour {
 		{
 			xmin = -krvjačina/2;
 			xmax = krvjačina/2;
+
+			cofx = 1f;
+
 		}
 			
 		else if (this.transform.position.x > t.position.x){
 			xmin = -krvjačina;
 			xmax = 0f;
+
+			if (xv < 0f)
+				cofx = 1f;
+			else cofx = -1f;
+
+
 		}
 		else 
 		{
 			xmin = 0f;
 			xmax = krvjačina;
+			if (0f < xv)
+				cofx = 1f;
+			else cofx = -1f;
 		}	
 
 		
@@ -118,20 +133,28 @@ public class Enemyv2 : MonoBehaviour {
 
 			ymin = -krvjačina/2;
 			ymax = krvjačina/2;
+
+			cofy = 1f;
 		}
 		else if (this.transform.position.y > t.position.y)
 		{
 			ymin = -krvjačina;
 			ymax = 0f;
+			if (yv < 0f)
+				cofy = 1f;
+			else cofy = -1f;
 		}
 		else 
 		{
 			ymin = 0f;
 			ymax = krvjačina;
+			if (0f < yv)
+				cofy = 1f;
+			else cofy = -1f;
 		}	
 
 		for (int i = 0; i != Zrnakrvi.Length; i++) {
-			Zrnakrvi [i].rb.AddForce (new Vector2 (Random.Range (xmin, xmax), Random.Range (ymin, ymax)) * 200f, ForceMode2D.Impulse);
+			Zrnakrvi [i].rb.AddForce (new Vector2 (Random.Range (xmin, xmax) *cofx, Random.Range (ymin, ymax)*cofy) * 200f, ForceMode2D.Impulse);
 		}
 	}
 	
@@ -157,8 +180,14 @@ public class Enemyv2 : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D coll)
 	{
 
+
 		if (coll.gameObject.name == "Metak(Clone)")
 		{
+
+			Rigidbody2D rbcol = coll.gameObject.GetComponent<Rigidbody2D>();
+			
+			float xv =  coll.gameObject.GetComponent<Metak>().cofx;
+			float yv = coll.gameObject.GetComponent<Metak>().cofy;
 
 			rb.mass *= 2f;
 			score.GetComponent<Score>().UpdateScore();
@@ -169,8 +198,9 @@ public class Enemyv2 : MonoBehaviour {
 
 
 			Destroy (coll.gameObject);
-			
-			
+
+
+		
 			SpriteRenderer sr = GetComponent <SpriteRenderer>();
 			sr.sprite = deadsprite;
 			Destroy (bc);
@@ -178,7 +208,7 @@ public class Enemyv2 : MonoBehaviour {
 			killed = true;
 
 
-			AnimirajKrv (t);
+			AnimirajKrv (t, xv,yv);
 			
 				
 	
