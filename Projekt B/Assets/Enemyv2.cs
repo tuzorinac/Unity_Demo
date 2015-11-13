@@ -94,8 +94,8 @@ public class Enemyv2 : MonoBehaviour {
 
 		print (this.transform.lossyScale.x);
 
-		if (t.transform.position.x < this.transform.position.x + GetComponent<RectTransform>().rect.width/6
-	    &&  t.transform.position.x > this.transform.position.x-GetComponent<RectTransform>().rect.width/6)
+		if (t.transform.position.x < this.transform.position.x + GetComponent<RectTransform>().rect.width/5
+	    &&  t.transform.position.x > this.transform.position.x-GetComponent<RectTransform>().rect.width/5)
 		{
 			xmin = -krvjačina/2;
 			xmax = krvjačina/2;
@@ -112,8 +112,8 @@ public class Enemyv2 : MonoBehaviour {
 		}	
 
 		
-		if (t.transform.position.y < this.transform.position.y + GetComponent<RectTransform>().rect.height/6
-		    &&  t.transform.position.y > this.transform.position.y-GetComponent<RectTransform>().rect.height/6)
+		if (t.transform.position.y < this.transform.position.y + GetComponent<RectTransform>().rect.height/5
+		    &&  t.transform.position.y > this.transform.position.y-GetComponent<RectTransform>().rect.height/5)
 		{
 
 			ymin = -krvjačina/2;
