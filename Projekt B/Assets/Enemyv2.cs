@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class Enemyv2 : MonoBehaviour {
-	static float zastava;
+	public static float zastava;
 	Rigidbody2D rb;
 	BoxCollider2D bc;
 	float cofzapeo;
@@ -69,11 +69,11 @@ public class Enemyv2 : MonoBehaviour {
 		bc = GetComponent<BoxCollider2D> ();
 		pc = GetComponent<PolygonCollider2D> ();
 		cofzapeo = 1f;
+		zastava = 86.3f;
 		time = -1f;
-		zastava = 65f;
 		speed = 0.323f;
 		killed = false;
-		krvjačina = 0.05f;
+		krvjačina = 0.1f;
 
 
 	}
@@ -82,12 +82,56 @@ public class Enemyv2 : MonoBehaviour {
 	{
 		GameObject[] Zrnakrvitemp = new GameObject[75];
 		Krv[] Zrnakrvi = new Krv[75];
+
+
 		for (int i = 0; i != Zrnakrvitemp.Length; i++) {
 			Zrnakrvitemp [i] = (GameObject)Instantiate (Krvmodel, new Vector3 (t.position.x, t.position.y, -2.5f), new Quaternion (0, 0, 0, 0));
 			Zrnakrvi [i] = Zrnakrvitemp [i].GetComponent<Krv> ();
 		}
+
+		float xmin, xmax, ymin, ymax;
+
+
+		print (this.transform.lossyScale.x);
+
+		if (t.transform.position.x < this.transform.position.x + GetComponent<RectTransform>().rect.width/5
+	    &&  t.transform.position.x > this.transform.position.x-GetComponent<RectTransform>().rect.width/5)
+		{
+			xmin = -krvjačina/2;
+			xmax = krvjačina/2;
+		}
+			
+		else if (this.transform.position.x > t.position.x){
+			xmin = -krvjačina;
+			xmax = 0f;
+		}
+		else 
+		{
+			xmin = 0f;
+			xmax = krvjačina;
+		}	
+
+		
+		if (t.transform.position.y < this.transform.position.y + GetComponent<RectTransform>().rect.height/5
+		    &&  t.transform.position.y > this.transform.position.y-GetComponent<RectTransform>().rect.height/5)
+		{
+
+			ymin = -krvjačina/2;
+			ymax = krvjačina/2;
+		}
+		else if (this.transform.position.y > t.position.y)
+		{
+			ymin = -krvjačina;
+			ymax = 0f;
+		}
+		else 
+		{
+			ymin = 0f;
+			ymax = krvjačina;
+		}	
+
 		for (int i = 0; i != Zrnakrvi.Length; i++) {
-			Zrnakrvi [i].rb.AddForce (new Vector2 (Random.Range (-krvjačina, krvjačina), Random.Range (-krvjačina, krvjačina)) * 200f, ForceMode2D.Impulse);
+			Zrnakrvi [i].rb.AddForce (new Vector2 (Random.Range (xmin, xmax), Random.Range (ymin, ymax)) * 200f, ForceMode2D.Impulse);
 		}
 	}
 	
