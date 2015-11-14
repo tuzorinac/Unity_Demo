@@ -16,7 +16,6 @@ public class Metak : MonoBehaviour {
 	void FixedUpdate () {
 
 
-
 		if (timeout < Time.timeSinceLevelLoad - 2.5f)
 			Destroy (this.gameObject);
 			
