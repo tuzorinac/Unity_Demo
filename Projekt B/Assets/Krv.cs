@@ -15,7 +15,7 @@ public class Krv : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	 
-		if (sr.color.a != 0f)
+		if (sr.color.a >= 0f)
 	 {
 
 		Color32 c32 = (Color32)sr.color;

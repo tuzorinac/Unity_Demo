@@ -45,7 +45,7 @@ public class Lik : MonoBehaviour {
 		
 
 		
-		else if (Input.GetKey (KeyCode.LeftArrow) && !(rb.velocity.x < -maxvelocityx))
+		if (Input.GetKey (KeyCode.LeftArrow) && !(rb.velocity.x < -maxvelocityx))
 			rb.AddForce (new Vector2 (-1,0) * 0.45f * cof, ForceMode2D.Impulse );	
 
 

@@ -6,7 +6,6 @@ public class Enemyv2 : MonoBehaviour {
 	Rigidbody2D rb;
 	BoxCollider2D bc;
 	float cofzapeo;
-	float time;
 	float timecofdrugismer;
 	bool pada = true;
 	static float speed;
@@ -15,7 +14,7 @@ public class Enemyv2 : MonoBehaviour {
 	bool killed;
 	public Sprite deadsprite;
 	public GameObject Krvmodel;
-	static float krvjačina;
+	float duljinavektoraizlaznekrvi;
 	void Promjenismjerpopotrebi ()
 	{
 		if (this.rb.velocity.x == 0f && this.rb.velocity.y == 0f && !pada) {
@@ -70,22 +69,21 @@ public class Enemyv2 : MonoBehaviour {
 		pc = GetComponent<PolygonCollider2D> ();
 		cofzapeo = 1f;
 		zastava = 86.3f;
-		time = -1f;
+	
 		speed = 0.323f;
 		killed = false;
-		krvjačina = 0.1f;
-
+		duljinavektoraizlaznekrvi = 0.0005f;
 
 	}
 
-	void AnimirajKrv (Transform t, float xv,float yv)
+	void AnimirajKrv (Transform t, Vector2 vlcty)
 	{
-		GameObject[] Zrnakrvitemp = new GameObject[75];
-		Krv[] Zrnakrvi = new Krv[75];
+		GameObject[] Zrnakrvitemp = new GameObject[50];
+		Krv[] Zrnakrvi = new Krv[50];
 
 
 
-		print (xv + " " + yv);
+		//print (xv + " " + yv);
 
 		for (int i = 0; i != Zrnakrvitemp.Length; i++) {
 			Zrnakrvitemp [i] = (GameObject)Instantiate (Krvmodel, new Vector3 (t.position.x, t.position.y, -2.5f), new Quaternion (0, 0, 0, 0));
@@ -95,10 +93,93 @@ public class Enemyv2 : MonoBehaviour {
 		float xmin, xmax, ymin, ymax, cofx, cofy;
 
 
-		print (this.transform.lossyScale.x);
+		cofx = 1f;
+		cofy = 1f;
 
-		if (t.transform.position.x < this.transform.position.x + GetComponent<RectTransform>().rect.width/6
-	    &&  t.transform.position.x > this.transform.position.x-GetComponent<RectTransform>().rect.width/6)
+		print (vlcty.x + " vlcty stari " + vlcty.y);
+
+
+		vlcty *= (1 - duljinavektoraizlaznekrvi/vlcty.magnitude);
+
+
+		print (vlcty.x + " vlcty novi " + vlcty.y);
+		
+
+		xmin = vlcty.x - 20f;
+		xmax = vlcty.x + 20f;
+
+		ymin = vlcty.y - 20f;
+		ymax = vlcty.y + 20f;
+
+
+		print (xmin + " " + xmax + "xmas");
+
+
+		/* Nova verzija
+
+		float hunit, wunit;
+		hunit = GetComponent<RectTransform>().rect.height / 6f;
+		wunit = GetComponent<RectTransform>().rect.width / 6f;
+		
+
+	
+
+
+
+
+
+		for (float i=3;i!=0;i--)
+		{
+
+			float xveći = this.transform.position.x - wunit * i;
+			float xmanji = this.transform.position.x - wunit * (i -1);
+			print("x kolizije: " + t.position.x + "xveći" + xveći 
+			 + "xmanji " +  xmanji);
+
+
+			if (xveći <= t.position.x && xmanji > t.position.x)
+				{
+				xmin = krvjačina / (i + 1);
+				xmax = krvjačina * i;
+
+				if (xv < 0f)
+					cofx = -1f;
+				else cofx = 1f;
+
+				break;
+					
+				}
+			else if (xveći >= t.position.x && xmanji < t.position.x)
+			{
+				xmin = krvjačina *i;
+				xmax = krvjačina / (i+1);
+
+				if (0f < xv)
+					cofx = -1f;
+				else cofx = 1f;
+
+				break;
+				
+			}
+			else 
+			{
+				cofx = 1f;
+				xmin = krvjačina - 0.1f;
+				xmax = krvjačina + 0.1f;
+
+
+			}
+				
+			} */
+			
+
+	
+	 
+	  // Stara verzija
+	  
+	
+	/*  if (t.transform.position.x < this.transform.position.x + GetComponent<RectTransform>().rect.width/5
+	    &&  t.transform.position.x > this.transform.position.x-GetComponent<RectTransform>().rect.width/5)
 		{
 			xmin = -krvjačina/2;
 			xmax = krvjačina/2;
@@ -124,10 +205,9 @@ public class Enemyv2 : MonoBehaviour {
 			if (0f < xv)
 				cofx = 1f;
 			else cofx = -1f;
-		}	
+		}	*/
 
-		
-		if (t.transform.position.y < this.transform.position.y + GetComponent<RectTransform>().rect.height/6
+	/*	if (t.transform.position.y < this.transform.position.y + GetComponent<RectTransform>().rect.height/6
 		    &&  t.transform.position.y > this.transform.position.y-GetComponent<RectTransform>().rect.height/6)
 		{
 
@@ -153,8 +233,26 @@ public class Enemyv2 : MonoBehaviour {
 			else cofy = -1f;
 		}	
 
+
+		print ("cofx: "+cofx); */
+
+
+		if (float.IsNaN (xmin) || float.IsNaN (xmax)) {
+
+			xmin = -20f;
+			xmax = 20f;
+
+		}
+		if (float.IsNaN (ymin) || float.IsNaN (ymax)) {
+			
+			ymin = -20f;
+			ymax = 20f;
+			
+		}
+		    
+
 		for (int i = 0; i != Zrnakrvi.Length; i++) {
-			Zrnakrvi [i].rb.AddForce (new Vector2 (Random.Range (xmin, xmax) *cofx, Random.Range (ymin, ymax)*cofy) * 200f, ForceMode2D.Impulse);
+			Zrnakrvi [i].rb.AddForce (new Vector2 (Random.Range (xmin, xmax) *cofx, Random.Range (ymin, ymax)*cofy) * 0.1f, ForceMode2D.Impulse);
 		}
 	}
 	
@@ -184,7 +282,6 @@ public class Enemyv2 : MonoBehaviour {
 		if (coll.gameObject.name == "Metak(Clone)")
 		{
 
-			Rigidbody2D rbcol = coll.gameObject.GetComponent<Rigidbody2D>();
 			
 			float xv =  coll.gameObject.GetComponent<Metak>().cofx;
 			float yv = coll.gameObject.GetComponent<Metak>().cofy;
@@ -208,7 +305,7 @@ public class Enemyv2 : MonoBehaviour {
 			killed = true;
 
 
-			AnimirajKrv (t, xv,yv);
+			AnimirajKrv (t, new Vector2(xv,yv));
 			
 				
 	

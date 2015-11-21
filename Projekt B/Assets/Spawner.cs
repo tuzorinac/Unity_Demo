@@ -29,8 +29,7 @@ public class Spawner : MonoBehaviour {
 		else if (time + spawntime < Time.timeSinceLevelLoad)
 		{
 			time = -1f;
-			float x;
-			float y;
+
 	
 			GameObject o = (GameObject)Instantiate (e,new Vector3 (Random.Range(xrangemin,xrangemax),Random.Range(yrangemin,yrangemax),5), new Quaternion(0,0,0,0));
 			Enemyv2 newenemy = o.GetComponent <Enemyv2>();
